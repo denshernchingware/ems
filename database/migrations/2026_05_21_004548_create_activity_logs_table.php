@@ -6,20 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('action', 80);
+            $table->string('model_type', 100)->nullable();
+            $table->unsignedBigInteger('model_id')->nullable();
+            $table->text('description');
+            $table->string('ip_address', 45)->nullable();
+            $table->string('user_agent', 255)->nullable();
+            $table->json('old_values')->nullable();
+            $table->json('new_values')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->index(['user_id', 'created_at']);
+            $table->index('action');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('activity_logs');

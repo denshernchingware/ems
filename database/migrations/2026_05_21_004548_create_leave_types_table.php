@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 80)->unique();
+            $table->tinyInteger('days_allowed')->unsigned();
+            $table->boolean('is_paid')->default(true);
+            $table->boolean('requires_document')->default(false);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('leave_types');

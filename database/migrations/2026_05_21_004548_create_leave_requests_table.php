@@ -6,20 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('leave_type_id');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->tinyInteger('days_requested')->unsigned();
+            $table->text('reason')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');
+            $table->unsignedBigInteger('reviewed_by')->nullable();
+            $table->timestamp('reviewed_at')->nullable();
+            $table->text('reviewer_comment')->nullable();
+            $table->string('document_path', 255)->nullable();
             $table->timestamps();
+
+            // $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            // $table->foreign('leave_type_id')->references('id')->on('leave_types');
+            // $table->foreign('reviewed_by')->references('id')->on('users')->onDelete('set null');
+            $table->index(['employee_id', 'status']);
+            $table->index('start_date');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('leave_requests');
