@@ -21,8 +21,8 @@ return new class extends Migration
             $table->unsignedBigInteger('marked_by')->nullable();
             $table->timestamps();
 
-            // $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
-            // $table->foreign('marked_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('marked_by')->references('id')->on('users')->onDelete('set null');
             $table->unique(['employee_id', 'date']);
             $table->index('date');
         });

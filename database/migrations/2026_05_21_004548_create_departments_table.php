@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('code', 20)->unique();
-            $table->unsignedBigInteger('manager_id')->nullable();
+//$table->unsignedBigInteger('manager_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
