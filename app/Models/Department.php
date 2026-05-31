@@ -2,9 +2,54 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Department extends Model
 {
-    //
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'code',
+        'manager_id',
+        'parent_id',
+        'description',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function manager()
+    {
+        return $this->belongsTo(Employee::class, 'manager_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Department::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Department::class, 'parent_id');
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+
+    public function jobTitles()
+    {
+        return $this->hasMany(JobTitle::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

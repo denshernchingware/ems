@@ -33,10 +33,10 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('reviewed_by')
+                ->nullable()
                 ->constrained('users')
                 ->onUpdate('cascade')
-                ->nullOnDelete()
-                ->onDelete('cascade');
+                ->nullOnDelete();
             // $table->foreign('leave_type_id')->references('id')->on('leave_types');
             // $table->foreign('reviewed_by')->references('id')->on('users')->onDelete('set null');
             $table->index(['employee_id', 'status']);
